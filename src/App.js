@@ -1,9 +1,19 @@
+import { useState } from 'react';
 import './App.css';
 import EmailField from './components/EmailField';
+import emailsData from './data/emails';
 
 function App() {
-  const handleOnListChange = emailList => {
-    console.log(emailList);
+  const [autoCompleteResults, setAutoCompleteResults] = useState([]);
+
+  const handleOnSearchEmails = value => {
+    debugger
+    const regExp = new RegExp('^' + value);
+    const filtered = emailsData.filter(email => regExp.test(email));
+    setAutoCompleteResults(filtered);
+  };
+  const handleOnListChange = () => {
+    setAutoCompleteResults([]);
   }
   return (
     <div className="App">
@@ -11,6 +21,8 @@ function App() {
         <EmailField
           autoFocus
           onListChange={handleOnListChange}
+          onSearchEmails={handleOnSearchEmails}
+          autoCompleteOptions={autoCompleteResults}
         />
       </div>
     </div>

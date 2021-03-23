@@ -10,7 +10,7 @@ export const InputWrap = styled.div`
   border-radius: 8px;
   box-sizing: border-box;
 
-  > textarea {
+  textarea {
     flex: 1;
     ${({ textareaMinWidth }) => (`
       min-width: ${textareaMinWidth}px;
@@ -68,5 +68,40 @@ export const Chip = styled.div`
     &:hover {
       cursor: pointer;
     }
+  }
+`;
+
+export const TextareaWrap = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: auto;
+`;
+
+export const DropdownWrap = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  list-style: none;
+  background: #FDFDFD;
+  width: 18.375rem;
+  max-height: 16.356875rem;
+  overflow: auto;
+  padding: 0.625rem 0;
+  margin: 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 14px rgba(26, 24, 24, 0.08);
+`;
+
+export const DropdownItem = styled.li`
+  text-align: left;
+  padding: 0.6875rem;
+  font-family: SF Pro Text, sans-serif;
+  font-size: 0.875rem;
+  &:hover {
+    background-color: #EFF5F9;
+    cursor: pointer;
   }
 `;

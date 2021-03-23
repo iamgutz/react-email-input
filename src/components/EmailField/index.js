@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { InputWrap, Chip } from './styles';
+import {
+  InputWrap, Chip, DropdownWrap, DropdownItem, TextareaWrap,
+} from './styles';
 import { validEmailFormat } from './helpers';
 import { ReactComponent as ErrorCircle } from './svg/error-circle.svg';
-import { ReactComponent as Close } from './svg/close.svg';
+import closeIcon from './svg/close.svg';
 
 export const usePrevious = value => {
   const ref = useRef();
@@ -16,11 +18,18 @@ export const usePrevious = value => {
 const EmailField = ({
   autoFocus,
   onListChange,
+  autoCompleteOptions,
+  onSearchEmails,
 }) => {
   const [textareaMinWidth, setTextareaMinWidth] = useState(0);
   const [textareaValue, setTextareaValue] = useState('');
   const [emails, setEmails] = useState([]);
   const prevEmails = usePrevious(emails);
+  const textareaRef = useRef();
+
+  const setTextareaRef = node => {
+    textareaRef.current = node;
+  };
 
   const addEmail = email => {
     const emailList = [...emails, {
@@ -72,11 +81,23 @@ const EmailField = ({
     const { target: { value } } = e;
     setTextareaMinWidth(value.length * 10);
     setTextareaValue(value);
+    if (typeof onSearchEmails === 'function') {
+      onSearchEmails(value);
+    }
+  };
+
+  const handleOnAutoCompleteOptionClick = option => {
+    addEmail(option);
+    setTextareaValue('');
+    setTextareaMinWidth(0);
   };
 
   useEffect(() => {
     if (prevEmails !== emails && typeof onListChange === 'function') {
       onListChange(emails);
+      if (textareaRef) {
+        textareaRef.current.focus();
+      }
     }
   }, [prevEmails, emails, onListChange]);
 
@@ -89,17 +110,31 @@ const EmailField = ({
             <ErrorCircle />
           )}
           {email.valid && (
-            <button type="button" onClick={() => removeEmail(email.uid)}><Close /></button>
+            <button type="button" onClick={() => removeEmail(email.uid)}>
+              <img src={closeIcon} alt="close" />
+            </button>
           )}
         </Chip>
       ))}
-      <textarea
-        rows="1"
-        onKeyDown={handleOnKeyDown}
-        onChange={handleOnChange}
-        autoFocus={autoFocus}
-        value={textareaValue}
-      />
+      <TextareaWrap>
+        <textarea
+          ref={setTextareaRef}
+          rows="1"
+          onKeyDown={handleOnKeyDown}
+          onChange={handleOnChange}
+          autoFocus={autoFocus}
+          value={textareaValue}
+        />
+        {autoCompleteOptions.length > 0 && (
+          <DropdownWrap>
+            {autoCompleteOptions.map(option => (
+              <DropdownItem key={option} onClick={() => handleOnAutoCompleteOptionClick(option)}>
+                {option}
+              </DropdownItem>
+            ))}
+          </DropdownWrap>
+        )}
+      </TextareaWrap>
     </InputWrap>
   );
 };
@@ -107,11 +142,15 @@ const EmailField = ({
 EmailField.propTypes = {
   autoFocus: PropTypes.bool,
   onListChange: PropTypes.func,
+  autoCompleteOptions: PropTypes.arrayOf(PropTypes.string),
+  onSearchEmails: PropTypes.func,
 };
 
 EmailField.defaultProps = {
   autoFocus: false,
   onListChange() {},
+  autoCompleteOptions: [],
+  onSearchEmails() {},
 };
 
 export default EmailField;
