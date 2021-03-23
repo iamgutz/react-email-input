@@ -18,6 +18,12 @@ function App() {
   return (
     <div className="App">
       <div className="container">
+        <div className="instructions">
+          <p>Type email addresses into the input below.</p>
+          <p>Hit ENTER or TAB to add the email.</p>
+          <p>Hit BACKSPACE to delete last email added.</p>
+          <p>Mouseover an email to display the "Remove" button, click it to remove that email from the list.</p>
+        </div>
         <EmailField
           autoFocus
           onListChange={handleOnListChange}

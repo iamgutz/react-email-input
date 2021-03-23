@@ -15,6 +15,19 @@ body, #root {
   width: 400px;
 }
 
+.instructions {
+  background: #aeaeae;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+  margin-top: -15rem;
+}
+
+.instructions p {
+  font-size: 0.875rem;
+  text-align: left;
+}
+
 .App {
   display: flex;
   text-align: center;
