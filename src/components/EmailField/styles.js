@@ -26,6 +26,9 @@ export const InputWrap = styled.div`
 `;
 
 export const Chip = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-family: SF Pro Text, sans-serif;
@@ -33,13 +36,37 @@ export const Chip = styled.div`
   font-size: 0.875rem;
   cursor: default;
   margin: 0 0.3rem 0.3rem 0;
+
   &:hover {
     background-color: #EDEDED;
+    > button {
+      display: flex;
+    }
   }
+
   ${({ error }) => error && `
     background-color: #F3B7BD;
     &:hover {
       background-color: #F3B7BD;
     }
   `}
+
+  > svg {
+    width: 1rem;
+    height: auto;
+    margin-left: 0.25rem;
+  }
+
+  > button {
+    display: none;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin-left: 0.25rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
